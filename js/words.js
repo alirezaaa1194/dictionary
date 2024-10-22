@@ -7,24 +7,35 @@ const loaderContainer = document.querySelector(".loader-container");
 
 const cover = document.getElementById("cover");
 const iFrame = document.getElementById("iframe");
+const categoryLabel = document.getElementById("category-label");
 
+let allWords = [];
 let wordsArray = null;
+let search = null;
 
 const getWordsFromDB = () => {
   fetch("https://658056126ae0629a3f54f125.mockapi.io/words")
     .then((res) => res.json())
     .then((res) => {
+      if (!res.length) {
+        location.href = "./index.html";
+      }
+      if (search === "all-categories") {
+        categoryLabel.innerHTML = "همه دسته بندی ها";
+        search = res.map((r) => r.id).join("/");
+      }
+      allWords = res;
       wordsArray = res;
+
       wordsGenerator();
     });
 };
 
 const saveWordInDB = () => {
+  search = getLocationSearch("cat").split("/");
   if (originTextInput.value.trim() && translatedTextInput.value.trim()) {
     saveWordBtn.innerHTML = '<div class="btn-loader"></div>';
-    let isHaveThisWord = wordsArray.some(
-      (word) => word.word === originTextInput.value.trim()
-    );
+    let isHaveThisWord = wordsArray.some((word) => word.word === originTextInput.value.trim());
 
     if (!isHaveThisWord) {
       let newWordInfo = {
@@ -32,23 +43,59 @@ const saveWordInDB = () => {
         translated: translatedTextInput.value.trim(),
       };
 
-      fetch("https://658056126ae0629a3f54f125.mockapi.io/words", {
-        method: "POST",
-        headers: { "content-type": "application/json" },
-        body: JSON.stringify(newWordInfo),
-      }).then((res) => {
-        getWordsFromDB();
-        saveWordBtn.innerHTML = "ذخیره";
+      allWords.forEach((mainWords) => {
+        mainWords.words.push(newWordInfo);
+      });
+
+      search.forEach((param) => {
+        let mainCategoryWords = allWords.find((category) => category.id == param);
+        fetch(`https://658056126ae0629a3f54f125.mockapi.io/words/${param}`, {
+          method: "PUT",
+          headers: { "content-type": "application/json" },
+          body: JSON.stringify(mainCategoryWords),
+        }).then((res) => {
+          search = getLocationSearch("cat");
+          getWordsFromDB();
+          saveWordBtn.innerHTML = "ذخیره";
+        });
       });
 
       originTextInput.value = "";
       translatedTextInput.value = "";
+    } else {
+      originTextInput.value = "";
+      translatedTextInput.value = "";
+      saveWordBtn.innerHTML = "ذخیره";
+      alert("این کلمه از قبل وجود دارد");
     }
   }
 };
 
 const wordsGenerator = () => {
+  if (search === "all-categories") {
+    wordsArray = wordsArray.flatMap((data) => data.words);
+    categoryLabel.innerHTML = "همه دسته بندی ها";
+  } else {
+    let wordsInCategory = [];
+
+    let params = search.split("/");
+
+    params.forEach((param) => {
+      wordsInCategory.push(wordsArray.find((category) => category.id == param));
+    });
+
+    allWords = wordsInCategory;
+    if (!allWords[0] || allWords.includes(undefined)) {
+      location.href = "./index.html";
+    }
+
+    wordsArray = wordsInCategory?.flatMap((data) => data.words);
+    if (!categoryLabel.innerHTML) {
+      allWords.forEach((cats) => (categoryLabel.innerHTML += cats.categoryName + ", "));
+    }
+  }
   wordsList.innerHTML = "";
+
   if (wordsArray.length) {
     wordsArray
       .sort(() => 0.5 - Math.random())
@@ -57,14 +104,12 @@ const wordsGenerator = () => {
           "beforeend",
           `<li>
         <span>${index + 1}_ ${word.word}: 
-            <span class="translted-txt translted-txt-${word.id}">${
-            word.translated
-          }</span>
+            <span class="translted-txt translted-txt-${word.word}">${word.translated}</span>
         </span>
         
         <div>
-            <button class="hide-translted-btn" id="${word.id}">پنهان</button>
-            <button class="remove-word-btn" id="${word.id}">حذف</button>
+            <button class="hide-translted-btn" id="${word.word}">پنهان</button>
+            <button class="remove-word-btn" id="${word.word}">حذف</button>
         </div>
       </li>`
         );
@@ -118,11 +163,9 @@ const wordsGenerator = () => {
       }
     });
   } else {
-    wordsList.insertAdjacentHTML(
-      "beforeend",
-      `<li class="nothing"><h2>هیچ کلمه ای نیست!</h2></li>`
-    );
+    wordsList.insertAdjacentHTML("beforeend", `<li class="nothing"><h2>هیچ کلمه ای نیست!</h2></li>`);
   }
+
   loaderContainer.classList.add("hide");
 };
 
@@ -133,14 +176,20 @@ saveWordBtn.addEventListener("click", () => {
 const removeWordHandler = (btn) => {
   const wantRemove = confirm("آیا کلمه را حذف میکنید؟");
   const wordId = btn.id;
+
+  let mainCategories = allWords.filter((category) => category.words.find((word) => word.word == wordId));
+
   if (wantRemove) {
     btn.innerHTML = '<div class="btn-loader"></div>';
-
-    fetch(`https://658056126ae0629a3f54f125.mockapi.io/words/${wordId}`, {
-      method: "DELETE",
-      headers: { "content-type": "application/json" },
-    }).then(() => {
-      getWordsFromDB();
+    mainCategories.forEach((cat) => {
+      cat.words = cat.words.filter((word) => word.word !== wordId);
+      fetch(`https://658056126ae0629a3f54f125.mockapi.io/words/${cat.id}`, {
+        method: "PUT",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify(cat),
+      }).then(() => {
+        getWordsFromDB();
+      });
     });
   }
 };
@@ -166,6 +215,15 @@ cover.addEventListener("click", () => {
   iframe.classList.remove("show");
 });
 
+const getLocationSearch = (key) => {
+  let search = new URLSearchParams(location.search).get(key);
+  return search;
+};
+
 window.addEventListener("load", () => {
+  search = getLocationSearch("cat");
+  if (!search) {
+    location.href = "./index.html";
+  }
   getWordsFromDB();
 });

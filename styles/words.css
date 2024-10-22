@@ -1,13 +1,13 @@
 @font-face {
-  font-family: rubik;
-  src: url("./Rubik-Light.ttf");
+  font-family: dana-regular;
+  src: url("../public/fonts/DanaFaNum-Regular.woff2");
 }
 
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: rubik;
+  font-family: dana-regular;
   transition: 0.15s;
   -webkit-tap-highlight-color: transparent;
 }
@@ -200,6 +200,10 @@ iframe.show,
 
 .remove-word-btn .btn-loader {
   width: 30px;
+}
+
+#category-label {
+  margin-top: 1rem;
 }
 @keyframes l7 {
   33% {

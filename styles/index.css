@@ -1,0 +1,238 @@
+@font-face {
+  font-family: dana-regular;
+  src: url("../public/fonts/DanaFaNum-Regular.woff2");
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: dana-regular;
+  transition: 0.15s;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0px;
+  box-shadow: 0px 0px 6px rgba(0, 0, 0, 0.5);
+  padding-bottom: 30px;
+  position: relative;
+}
+
+.inputs-parent-elem {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+  padding: 30px 0;
+}
+
+input {
+  border-radius: 4px;
+  font-size: 1.2rem;
+  padding: 8px;
+  border: 1px solid black;
+}
+
+button {
+  color: white;
+  background: rgba(0, 0, 255, 0.8);
+  padding: 0px 13px;
+  height: 35px;
+  border-radius: 4px;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  font-size: 1.1rem;
+  -webkit-tap-highlight-color: transparent;
+}
+button:hover {
+  background-color: blue;
+}
+.categories-section {
+  width: 100%;
+  height: 100px;
+  max-width: 500px;
+  margin: 2rem auto;
+  padding: 0 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+.accordion {
+  display: flex;
+  flex-direction: column;
+  transition: 0.3s;
+  user-select: none;
+}
+.accordion.active {
+  background: rgb(194, 194, 194);
+  border-radius: 0.75rem;
+}
+.accordion-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem;
+  border-radius: 0.75rem;
+  background: #e1e1e3;
+  cursor: pointer;
+  font-weight: bold;
+}
+.accordion.active .accordion-header {
+  background: rgb(194, 194, 194);
+  border-radius: 0.75rem 0.75rem 0 0;
+}
+svg {
+  width: 22px;
+  vertical-align: middle;
+}
+.accordion.active .accordion-header svg {
+  transform: rotate(180deg);
+}
+
+.accordion-body {
+  background: #e1e1e3;
+  border-radius: 0 0 0.75rem 0.75rem;
+  height: 0;
+  overflow: hidden;
+}
+
+.accordion-item {
+  padding: 0.7rem 1rem;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.btn-box {
+  display: flex;
+  justify-content: flex-end;
+}
+.accordion-body button {
+  margin: 0.5rem;
+}
+.categories-container {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+}
+.category {
+  border-radius: 0.75rem;
+  background-color: white;
+  font-weight: bold;
+  padding: 0.6rem 1rem;
+  box-shadow: 0px 0px 6px #cfd0d1;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+  gap: 1rem;
+}
+.category a {
+  font-size: 1.1rem;
+  color: black;
+  text-decoration: none;
+}
+.category button {
+  background: none;
+  padding: 0;
+  color: black;
+  visibility: hidden;
+  opacity: 0;
+}
+.category:hover button {
+  visibility: visible;
+  opacity: 1;
+}
+.category button.active {
+  visibility: visible;
+  opacity: 1;
+}
+
+.category-delete-btn {
+  color: red !important;
+}
+
+.btn-loader {
+  width: 50px;
+  aspect-ratio: 4;
+  --_g: no-repeat radial-gradient(circle closest-side, #fff 90%, #0000);
+  background: var(--_g) 0% 50%, var(--_g) 50% 50%, var(--_g) 100% 50%;
+  background-size: calc(100% / 3) 100%;
+  animation: l7 1s infinite linear;
+}
+
+.loader-container {
+  width: 100%;
+  height: 100vh;
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 100;
+  background-color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 1;
+  visibility: visible;
+}
+.loader-container.hide {
+  opacity: 0;
+  visibility: hidden;
+}
+.loader {
+  width: 50px;
+  padding: 8px;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: #25b09b;
+  --_m: conic-gradient(#0000 10%, #000), linear-gradient(#000 0 0) content-box;
+  -webkit-mask: var(--_m);
+  mask: var(--_m);
+  -webkit-mask-composite: source-out;
+  mask-composite: subtract;
+  animation: l3 1s infinite linear;
+}
+.nothing {
+  text-align: center;
+  color: red;
+  margin-top: 2rem;
+}
+
+#cancel-category-btn {
+  background: rgba(255, 0, 0, 0.8);
+  display: none;
+}
+#cancel-category-btn:hover {
+  background: rgba(255, 0, 0, 1);
+}
+#cancel-category-btn.active {
+  display: block;
+}
+@keyframes l7 {
+  33% {
+    background-size: calc(100% / 3) 0%, calc(100% / 3) 100%, calc(100% / 3) 100%;
+  }
+  50% {
+    background-size: calc(100% / 3) 100%, calc(100% / 3) 0%, calc(100% / 3) 100%;
+  }
+  66% {
+    background-size: calc(100% / 3) 100%, calc(100% / 3) 100%, calc(100% / 3) 0%;
+  }
+}
+@keyframes l3 {
+  to {
+    transform: rotate(1turn);
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .categories-container {
+    grid-template-columns: repeat(1, 1fr);
+  }
+}
