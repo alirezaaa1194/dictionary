@@ -25,12 +25,16 @@
 
 .inputs-parent-elem {
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
   gap: 15px;
   padding: 30px 0;
 }
-
+.inputs-parent-elem div {
+  display: flex;
+  gap: 10px;
+}
 input {
   border-radius: 4px;
   font-size: 1.2rem;
