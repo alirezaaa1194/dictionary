@@ -92,6 +92,7 @@ const wordsGenerator = () => {
     wordsArray = wordsInCategory?.flatMap((data) => data.words);
     if (!categoryLabel.innerHTML) {
       allWords.forEach((cats) => (categoryLabel.innerHTML += cats.categoryName + ", "));
+      categoryLabel.innerHTML=categoryLabel.innerHTML.substr(0, categoryLabel.innerHTML.length - 2)
     }
   }
   wordsList.innerHTML = "";
