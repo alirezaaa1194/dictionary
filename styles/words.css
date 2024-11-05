@@ -95,6 +95,9 @@ li.nothing {
   justify-content: center;
   margin-top: 2rem;
 }
+li.list-markup {
+  background: pink;
+}
 li div {
   display: flex;
   align-items: center;
@@ -136,7 +139,9 @@ iframe.show,
 .remove-word-btn,
 .remove-word-btn:hover,
 .hide-translted-btn,
-.hide-translted-btn:hover, .markup-word-btn, .markup-word-btn:hover {
+.hide-translted-btn:hover,
+.markup-word-btn,
+.markup-word-btn:hover {
   background: none;
   padding: 0px;
   border: none;
@@ -153,20 +158,24 @@ iframe.show,
   color: rgba(255, 0, 0, 1);
 }
 
-#hide-allWords-btn{
+#hide-allWords-btn {
   background: none;
 }
-.hide-translted-btn svg, #hide-allWords-btn svg, .markup-word-btn svg {
+.hide-translted-btn svg,
+#hide-allWords-btn svg,
+.markup-word-btn svg {
   color: rgba(0, 0, 0, 0.6);
   width: 27px;
   vertical-align: middle;
 }
 
-.hide-translted-btn:hover svg, #hide-allWords-btn:hover svg, .markup-word-btn:hover svg {
+.hide-translted-btn:hover svg,
+#hide-allWords-btn:hover svg,
+.markup-word-btn:hover svg {
   color: rgba(0, 0, 0, 1);
 }
 
-.solid-markup-svg{
+.solid-markup-svg {
   color: black !important;
 }
 
@@ -248,9 +257,14 @@ iframe.show,
   }
 
   ul li {
-    padding: 12px 10px !important;
+    padding: 12px 10px 12px 0 !important;
   }
-
+  li div {
+    gap: 0px !important;
+  }
+  ul svg {
+    width: 20px !important;
+  }
   .remove-word-btn,
   .hide-translted-btn {
     font-size: 0.9rem;
