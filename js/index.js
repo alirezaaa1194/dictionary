@@ -14,6 +14,9 @@ const saveCategoryBtn = document.querySelector("#save-category-btn");
 const cancelCategoryBtn = document.querySelector("#cancel-category-btn");
 const saveCategoriesChangeBtn = document.querySelector("#save-categories-change-btn");
 const allCategoriesCheckbox = document.querySelector("#all-categories");
+const randomSettingBox = document.querySelector(".random-setting-box");
+const randomWordCheckbox = document.querySelector("#random-word-checkbox");
+
 
 let allCategories = [];
 
@@ -55,7 +58,7 @@ const categoriesGenerator = (categories) => {
       categoriesContainer.insertAdjacentHTML(
         "beforeend",
         `<div class="category">
-          <a href="./words.html?cat=${category.id}">${category.categoryName}</a>
+          <span class="category-link-btn">${category.categoryName}</span>
           <span>
           <button class="category-delete-btn" id="${category.id}">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
@@ -72,6 +75,15 @@ const categoriesGenerator = (categories) => {
         </div>`
       );
     });
+
+
+    const categoryLinkBtns=document.querySelectorAll('.category-link-btn')
+    categoryLinkBtns.forEach((btn, index)=>{
+      btn.addEventListener('click', ()=>{
+        location.href=`./words.html?cat=${categories[index].id}${randomWordCheckbox.checked ? `&random=${randomWordCheckbox.checked}` : ""}`
+
+      })
+    })
 
     const categoriesCheckboxs = document.querySelectorAll(".categories-checkbox");
     const categoryEditBtns = document.querySelectorAll(".category-edit-btn");
@@ -109,6 +121,7 @@ const categoriesGenerator = (categories) => {
         isEditing = true;
         mainCategory = allCategories.find((category) => category.id == editBtn.id);
 
+        randomSettingBox.classList.add("hide");
         editBtn.classList.add("active");
 
         categoryTextInput.setAttribute("placeholder", `نام کتگوری را ویرایش کنید`);
@@ -150,6 +163,7 @@ cancelCategoryBtn.addEventListener("click", () => {
   categoryTextInput.setAttribute("placeholder", `نام کتگوری را وارد کنید`);
   saveCategoryBtn.innerHTML = "ذخیره";
   cancelCategoryBtn.classList.remove("active");
+  randomSettingBox.classList.remove("hide");
   const categoryEditBtns = document.querySelectorAll(".category-edit-btn");
   categoryEditBtns.forEach((editBtn) => {
     editBtn.classList.remove("active");
@@ -200,7 +214,8 @@ allCategoriesCheckbox.addEventListener("change", () => {
   categoriesId = [];
 });
 saveCategoriesChangeBtn.addEventListener("click", () => {
-  location.href = `./words.html?cat=${categoriesId.join("/")}`;
+  location.href=`./words.html?cat=${categoriesId.join("/")}${randomWordCheckbox.checked ? `&random=${randomWordCheckbox.checked}` : ""}`
+  
 });
 
 window.addEventListener("load", () => {

@@ -137,10 +137,11 @@ svg {
   position: relative;
   gap: 1rem;
 }
-.category a {
+.category .category-link-btn {
   font-size: 1.1rem;
   color: black;
   text-decoration: none;
+  cursor: pointer;
 }
 .category button {
   background: none;
@@ -233,6 +234,15 @@ svg {
   to {
     transform: rotate(1turn);
   }
+}
+
+
+.random-setting-box{
+  display: block;
+  user-select: none;
+}
+.random-setting-box.hide{
+  display: none;
 }
 
 @media screen and (max-width: 768px) {

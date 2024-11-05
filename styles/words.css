@@ -133,21 +133,43 @@ iframe.show,
   visibility: visible;
 }
 
-.remove-word-btn {
-  background-color: rgba(255, 0, 0, 0.7);
+.remove-word-btn,
+.remove-word-btn:hover,
+.hide-translted-btn,
+.hide-translted-btn:hover, .markup-word-btn, .markup-word-btn:hover {
+  background: none;
+  padding: 0px;
+  border: none;
+  outline: none;
+  cursor: pointer;
 }
 
-.remove-word-btn:hover {
-  background-color: rgba(255, 0, 0, 1);
+.remove-word-btn svg {
+  color: rgba(255, 0, 0, 0.7);
+  width: 27px;
+  vertical-align: middle;
+}
+.remove-word-btn:hover svg {
+  color: rgba(255, 0, 0, 1);
 }
 
-.hide-translted-btn {
-  background-color: rgba(0, 0, 255, 0.8);
+#hide-allWords-btn{
+  background: none;
+}
+.hide-translted-btn svg, #hide-allWords-btn svg, .markup-word-btn svg {
+  color: rgba(0, 0, 0, 0.6);
+  width: 27px;
+  vertical-align: middle;
 }
 
-.hide-translted-btn:hover {
-  background-color: blue;
+.hide-translted-btn:hover svg, #hide-allWords-btn:hover svg, .markup-word-btn:hover svg {
+  color: rgba(0, 0, 0, 1);
 }
+
+.solid-markup-svg{
+  color: black !important;
+}
+
 .header-btn-sec {
   width: 100%;
   padding: 0 10px;
@@ -196,10 +218,6 @@ iframe.show,
   background: var(--_g) 0% 50%, var(--_g) 50% 50%, var(--_g) 100% 50%;
   background-size: calc(100% / 3) 100%;
   animation: l7 1s infinite linear;
-}
-
-.remove-word-btn .btn-loader {
-  width: 30px;
 }
 
 #category-label {
