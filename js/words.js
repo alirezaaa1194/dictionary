@@ -77,7 +77,9 @@ const saveWordInDB = () => {
 
 const wordsGenerator = () => {
   if (search === "all-categories") {
-    wordsArray = wordsArray.flatMap((data) => data.words);
+    // wordsArray = wordsArray.flatMap((data) => data.words);
+
+
     categoryLabel.innerHTML = "همه دسته بندی ها";
   } else {
     let wordsInCategory = [];
@@ -94,11 +96,16 @@ const wordsGenerator = () => {
     }
 
     wordsArray = wordsInCategory?.flatMap((data) => data.words);
+
+    
+
     if (!categoryLabel.innerHTML) {
       allWords.forEach((cats) => (categoryLabel.innerHTML += cats.categoryName + ", "));
       categoryLabel.innerHTML = categoryLabel.innerHTML.substr(0, categoryLabel.innerHTML.length - 2);
     }
-  }
+  }  
+
+
   wordsList.innerHTML = "";
 
   hideAllWordsBtn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
@@ -106,9 +113,11 @@ const wordsGenerator = () => {
         </svg>`;
 
   if (wordsArray.length) {
+    
     let isRandom = new URLSearchParams(location.href).get("random");
 
     if (isRandom) {
+      
       wordsArray
         .sort(() => 0.5 - Math.random())
         .forEach((word, index) => {

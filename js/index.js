@@ -51,14 +51,14 @@ const categoriesGenerator = (categories) => {
         `
             <div class="accordion-item">
               <input type="checkbox" class="categories-checkbox" id="${category.id}" />
-              <label for="${category.id}">${category.categoryName}</label>
+              <label for="${category.id}">${category.categoryName} <span style="font-size:1.1rem; font-weight:normal;">(${category.words.length})</span></label>
             </div>
             `
       );
       categoriesContainer.insertAdjacentHTML(
         "beforeend",
         `<div class="category">
-          <span class="category-link-btn">${category.categoryName}</span>
+          <span class="category-link-btn">${category.categoryName} <span style="font-size:1.1rem; font-weight:normal;">(${category.words.length})</span></span>
           <span>
           <button class="category-delete-btn" id="${category.id}">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
