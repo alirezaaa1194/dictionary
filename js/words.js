@@ -79,7 +79,6 @@ const wordsGenerator = () => {
   if (search === "all-categories") {
     // wordsArray = wordsArray.flatMap((data) => data.words);
 
-
     categoryLabel.innerHTML = "همه دسته بندی ها";
   } else {
     let wordsInCategory = [];
@@ -91,20 +90,18 @@ const wordsGenerator = () => {
     });
 
     allWords = wordsInCategory;
+    
     if (!allWords[0] || allWords.includes(undefined)) {
       location.href = "./index.html";
     }
 
     wordsArray = wordsInCategory?.flatMap((data) => data.words);
 
-    
-
     if (!categoryLabel.innerHTML) {
       allWords.forEach((cats) => (categoryLabel.innerHTML += cats.categoryName + ", "));
       categoryLabel.innerHTML = categoryLabel.innerHTML.substr(0, categoryLabel.innerHTML.length - 2);
     }
-  }  
-
+  }
 
   wordsList.innerHTML = "";
 
@@ -113,11 +110,8 @@ const wordsGenerator = () => {
         </svg>`;
 
   if (wordsArray.length) {
-    
     let isRandom = new URLSearchParams(location.href).get("random");
-
     if (isRandom) {
-      
       wordsArray
         .sort(() => 0.5 - Math.random())
         .forEach((word, index) => {
@@ -243,14 +237,16 @@ ${
     markupWordBtns.forEach((markupBtn) => {
       markupBtn.addEventListener("click", () => {
         let mainWord = wordsArray.find((word) => word.word === markupBtn.id);
-        let isMarkUpedWord = JSON.parse(mainWord.markup);
-        mainWord.markup = JSON.stringify(!isMarkUpedWord);
 
         const wordId = markupBtn.id;
-        let mainCategories = allWords.filter((category) => category.words.find((word) => word.word.split(" ").join("") == wordId));
+
+        let mainCategories = allWords.filter((category) => category.words.some((word) => word.word.split(" ").join("") == wordId));
 
         mainCategories.forEach((cat) => {
-          cat.words = wordsArray;
+          let wordsInAllWords = cat.words.find((word) => word.word === mainWord.word);
+
+          wordsInAllWords.markup = JSON.stringify(!JSON.parse(wordsInAllWords.markup));
+
           fetch(`https://658056126ae0629a3f54f125.mockapi.io/words/${cat.id}`, {
             method: "PUT",
             headers: { "content-type": "application/json" },
